@@ -8,17 +8,19 @@ $ape = "Segura Ariño";
 //Visualizo el texto con echo y print, por ejemplo en mi caso (deben de aparecer las comillas del ejemplo
 // mi nombre es "manolo" y mi apellido es "romero"
 //1)con echo pasando varios argumentos (separadados por coma)
-echo("");
+echo'Mi ','nombre ','es ','"Mauricio Segura"<br />';
 
 //2)con print
-
+print("Mi nombre es $nom $ape");
 
 //Explica en el fichero diferencias entre echo y print y semejanzas.
 //Por qué puedo pasar los argumentos sin usar paréntesis
 //Puedo hacerlo con printf
+
 /*Sintaxis heredoc,*/
 //Asigna a una variable llamada informe un texto de cinco líneas,
 //la etiqueta de finalización es FIN
+
 //Posteriormente visualizas el texto
 // El contenido de 'informe' es
 // aquí aparecer el contenido del infoorme
