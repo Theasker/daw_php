@@ -75,4 +75,3 @@ if (settype($temp, "null")) {
 //Prueba a ver el valor y tipo de una variable no definida previamente
 echo "<br />El varlor de la variable es \"$sindefinir\", y su tipo es " . gettype($sindefinir) . "<br />";
 // Da error "Undefined variable" y el valor es NULL
-?>
