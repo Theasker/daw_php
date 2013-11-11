@@ -32,7 +32,7 @@ print("Mi nombre es $nom $ape<br />");
 //Puedo hacerlo con printf
 $texto = <<<FIN
 <ul>
-  <li> <strong>Diferencias entre <code>echo</code> y <code>print</code></strong>
+  <li> <strong>Diferencias entre echo y print</strong>
     <ul>
     <li> echo es más rápido que print.</li>
     <li> echo es mas versatil y cómodo de usar.</li>
