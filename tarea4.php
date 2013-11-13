@@ -20,9 +20,9 @@
 //        var_dump($_REQUEST);
 //        echo 'var_dump($matriz_agenda);';
 //        var_dump($matriz_agenda);
+
         // Comprobamos que se ha pulsado el botón enviar
         if (isset($_REQUEST['enviar'])) {
-          echo "Se ha pulsado el botón enviar<br />";
           // agregamos todos los contactos anteriores que vienen del formulario
           // menos el que se acaba de agregar que se añade con array_push
           foreach ($_REQUEST as $key => $value) {
@@ -32,8 +32,15 @@
           }
           // comprobamos que los campos no están vacios
           if (!empty($_REQUEST['nombre']) && !empty($_REQUEST['telefono'])) {
-            echo "se ha rellenado correctamente<br />";
-            array_push($matriz_agenda, array($_REQUEST['nombre'] => $_REQUEST['telefono']));
+            // compruebo que el nombre introducido no está en el array
+            // si está lo sobreescribo.
+            if (in_array($_REQUEST['nombre'], $matriz_agenda)){ // Si está repetido
+              echo "El nombre introducido ya estaba en el array<br />";
+              $key = array_search($_REQUEST['nombre'], $matriz_agenda);
+              $matriz_agenda[$key] = [$_REQUEST['nombre'] => $_REQUEST['telefono']];
+            }else{ // No está repetido 
+              $matriz_agenda[] = [$_REQUEST['nombre'] => $_REQUEST['telefono']];
+            }
           } else { // Alguno de los campos nombre y/o telefono están vacios
             if (empty($_REQUEST['nombre']))
               echo "Debes introducir un nombre<br />";
@@ -52,21 +59,30 @@
           }
           echo "</table>";
           echo "Hay un total de $cont contactos en la agenda";
+          
         }
-        echo count($matriz_agenda);
+
+        // Si hemos pulsado el botón borrar eliminamos la matriz
+        if (isset($_REQUEST['borrar'])){
+          if(isset($matriz_agenda)){
+            unset($matriz_agenda);
+            $matriz_agenda = array();
+          }
+        }
 
         echo '<form  action =./tarea4.php method="post">';
-        foreach ($matriz_agenda as $key => $value) {
-          //echo '<input type="hidden" name="'.$matriz_agenda["nombre"].'" value="'.$matriz_agenda["telefono"].'">';
-          foreach ($value as $key2 => $value2) {
-            //echo "$key\t$key2 \t \t \t$value2<br />";
-            echo '<input type="hidden" name="' . $key2 . '" value="' . $value2 . '">';
+        if (isset($matriz_agenda)) { // sólo hacemos el proceso si existe el array.
+          foreach ($matriz_agenda as $key => $value) {
+            foreach ($value as $key2 => $value2) {
+              echo '<input type="hidden" name="' . $key2 . '" value="' . $value2 . '">';
+            }
           }
         }
         echo '<input type="hidden" name="accion" value="nuevo">';
         echo '<label>Nombre:</label><input type="text" name="nombre"/><br/>';
         echo '<label>Teléfono </label><input type="text" name="telefono"/><br/>';
-        echo '<input type="submit" value ="Añadir Contacto" name="enviar"><br/>';
+        echo '<input type="submit" value ="Añadir Contacto" name="enviar">';
+        echo '<input type="submit" value ="Vaciar agenda" name="borrar"><br/>';
         echo '</form>';
 //        echo 'var_dump($_REQUEST);';
 //        var_dump($_REQUEST);
