@@ -8,25 +8,11 @@
   <body>
     <div class="contenedor">
       <center>
-        <h1>Tarea 3 - Desarrollo Web Entorno Servidor
-          <p>Pequeña agenda <a href="http://manuel.servidor.infenlaces.com/agenda.php">(ejemplo)</a></p><hr></h1></center>
+        <h1>Tarea 3 - Desarrollo Web Entorno Servidor</h1>
+        Mauricio Segura Ariño
+        <p><h2>Pequeña agenda <a href="http://manuel.servidor.infenlaces.com/agenda.php">(ejemplo)</a></p><hr></h2></center>
       <div class="contenido">
         <?php
-        function comprobar($val,$obj){
-          // Comprobamos si la matriz es un objeto, si no lo es lo convertimos
-          if(!is_object($obj)){
-            $obj = (object)$obj;
-          }
-          foreach ($obj as $key => $value) {
-            if(!is_object($value) && !is_array($value)){
-              if($value == $val){
-                return true;
-              }
-            }else{
-              return comprobar($val,$value);
-            }
-          }
-        }
         $matriz_agenda = array();
 
         // Comprobamos que se ha pulsado el botón enviar
@@ -34,28 +20,26 @@
           // agregamos todos los contactos anteriores que vienen del formulario
           // menos el que se acaba de agregar que se añade posteriormente
           foreach ($_REQUEST as $key => $value) {
-            if (($key <> 'nombre') && ($key <> 'telefono') && ($key <> 'enviar')) {
-              $matriz_agenda[$key] = $value;
+            if (($key <> 'accion') && ($key <> 'nombre') && ($key <> 'telefono') && ($key <> 'enviar')) {
+              $matriz_agenda["$key"] = $value;
             }
           }
-          if (comprobar($_REQUEST('nombre'),$matriz_agenda)) { // Comprobamos que se ha introducido un nombre
+          if (!empty($_REQUEST['nombre'])) { // Comprobamos que se ha introducido un nombre
             // compruebo que el nombre introducido no está en el array
             // si está lo sobreescribo.
-
-            if (in_array($_REQUEST['nombre'], (array)$matriz_agenda)) { //duplicado
+            if (comprobacion($matriz_agenda)) { //duplicado
               echo "duplicado<br />";
               // Existe el nombre y el campo teléfono está vacío.
               if (empty($_REQUEST['telefono']) || $_REQUEST['telefono'] == '') {
                 echo "lo borro<br />";
                 unset($matriz_agenda[$_REQUEST['nombre']]); // Eliminamos el elemento
-              } else //Existe el nombre y el telefono NO está vacío
-                $matriz_agenda[(string)$_REQUEST['nombre']] = $_REQUEST['telefono'];
+              } else
+                $matriz_agenda[$_REQUEST['nombre']] = $_REQUEST['telefono'];
             }
             else { // NO duplicado
               // Comprobamos que se ha introducido el teléfono
               if (!empty($_REQUEST['telefono'])) {
-                // Actualizo el contacto existente
-                $matriz_agenda[(string)$_REQUEST['nombre']] = $_REQUEST['telefono'];
+                $matriz_agenda[$_REQUEST['nombre']] = $_REQUEST['telefono'];
               } else { // No se ha introducido el teléfono
                 echo "Debes introducir un numero de teléfono<br />";
               }
@@ -87,19 +71,28 @@
           }
         }
         echo '<div class="encuadre">';
-        echo '<form  action =./temp.php method="post">';
+        echo '<form  action =./tarea4sin_inarray.php method="post">';
         if (isset($matriz_agenda)) { // sólo hacemos el proceso si existe el array.
           foreach ($matriz_agenda as $nom => $num) {
             echo '<input type="hidden" name="' . $nom . '" value="' . $num . '">';
           }
         }
-        echo '<label>Nombre: </label><input type="text" name="nombre" value="" /><br />';
-        echo '<label>Teléfono: </label><input type="text" name="telefono" value="" /><br />';
+        echo '<label>Nombre: </label><input type="text" name="nombre"/><br />';
+        echo '<label>Teléfono: </label><input type="text" name="telefono"/><br />';
         echo '<p><input type="submit" value ="Añadir Contacto" name="enviar">';
         echo '<input type="submit" value ="Vaciar agenda" name="borrar"><p/>';
         echo '</form>';
         echo '</div>';
-        
+
+        function comprobacion($matriz) {
+          foreach ($matriz as $nom => $num) {
+            if ($nom ==  $_REQUEST('nombre')) {
+              return true;
+            }
+            return false;
+          }
+        }
+
         var_dump($_REQUEST);
         var_dump($matriz_agenda);
         ?>

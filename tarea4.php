@@ -12,7 +12,6 @@
           <p>Pequeña agenda <a href="http://manuel.servidor.infenlaces.com/agenda.php">(ejemplo)</a></p><hr></h1></center>
       <div class="contenido">
         <?php
-        
         $matriz_agenda = array();
 
         // Comprobamos que se ha pulsado el botón enviar
@@ -20,28 +19,29 @@
           // agregamos todos los contactos anteriores que vienen del formulario
           // menos el que se acaba de agregar que se añade posteriormente
           foreach ($_REQUEST as $key => $value) {
-            if (($key <> 'accion') && ($key <> 'nombre') && ($key <> 'telefono') && ($key <> 'enviar')) {
-              $matriz_agenda["$key"] = $value;
+            if (($key <> 'nombre') && ($key <> 'telefono') && ($key <> 'enviar')) {
+              $matriz_agenda[$key] = $value;
             }
           }
           if (!empty($_REQUEST['nombre'])) { // Comprobamos que se ha introducido un nombre
             // compruebo que el nombre introducido no está en el array
             // si está lo sobreescribo.
-            $encontrado = false;
-            if (in_array($_REQUEST['nombre'], $matriz_agenda)) { //duplicado
-              $encontrado = true;
-              // Existe el nombre y el campo teléfono está vacío.
-              if (empty($_REQUEST['telefono'])) {
-                unset($matriz_agenda[$_REQUEST['nombre']]); // Eliminamos el elemento
-              } else
-                $matriz_agenda[$_REQUEST['nombre']] = $_REQUEST['telefono'];
-            }
 
-            if (!$encontrado) { // Si no está duplicado
+            if (in_array($_REQUEST['nombre'], (array)$matriz_agenda)) { //duplicado
+              echo "duplicado<br />";
+              // Existe el nombre y el campo teléfono está vacío.
+              if (empty($_REQUEST['telefono']) || $_REQUEST['telefono'] == '') {
+                echo "lo borro<br />";
+                unset($matriz_agenda[$_REQUEST['nombre']]); // Eliminamos el elemento
+              } else //Existe el nombre y el telefono NO está vacío
+                $matriz_agenda[(string)$_REQUEST['nombre']] = $_REQUEST['telefono'];
+            }
+            else { // NO duplicado
               // Comprobamos que se ha introducido el teléfono
               if (!empty($_REQUEST['telefono'])) {
-                $matriz_agenda[$_REQUEST['nombre']] = $_REQUEST['telefono'];
-              }else{ // No se ha introducido el teléfono
+                // Actualizo el contacto existente
+                $matriz_agenda[(string)$_REQUEST['nombre']] = $_REQUEST['telefono'];
+              } else { // No se ha introducido el teléfono
                 echo "Debes introducir un numero de teléfono<br />";
               }
             }
@@ -56,7 +56,7 @@
           $cont = 0;
           // Mostramos todos los contactos de la agenda
           foreach ($matriz_agenda as $nom => $num) {
-            echo "<tr><td>$nom</td><td>$num</td></tr>";
+            echo "<tr><td>$nom (" . gettype($nom) . ")</td><td>$num (" . gettype($num) . ")</td></tr>";
             $cont++;
           }
           echo "</table>";
@@ -78,15 +78,15 @@
             echo '<input type="hidden" name="' . $nom . '" value="' . $num . '">';
           }
         }
-        echo '<input type="hidden" name="accion" value="nuevo">';
-        echo '<label>Nombre: </label><input type="text" name="nombre"/><br />';
-        echo '<label>Teléfono: </label><input type="text" name="telefono"/><br />';
+        echo '<label>Nombre: </label><input type="text" name="nombre" value="" /><br />';
+        echo '<label>Teléfono: </label><input type="text" name="telefono" value="" /><br />';
         echo '<p><input type="submit" value ="Añadir Contacto" name="enviar">';
         echo '<input type="submit" value ="Vaciar agenda" name="borrar"><p/>';
         echo '</form>';
         echo '</div>';
+        var_dump($_REQUEST);
+        var_dump($matriz_agenda);
         ?>
-
       </div>
     </div>
   </body>
