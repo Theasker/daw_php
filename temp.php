@@ -38,7 +38,8 @@
               $matriz_agenda[$key] = $value;
             }
           }
-          if (comprobar($_REQUEST('nombre'),$matriz_agenda)) { // Comprobamos que se ha introducido un nombre
+          $temp = $_REQUEST('nombre');
+          if (comprobar($temp,$matriz_agenda)) { // Comprobamos que se ha introducido un nombre
             // compruebo que el nombre introducido no está en el array
             // si está lo sobreescribo.
 

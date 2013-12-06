@@ -26,12 +26,9 @@
           if (!empty($_REQUEST['nombre'])) { // Comprobamos que se ha introducido un nombre
             // compruebo que el nombre introducido no está en el array
             // si está lo sobreescribo.
-
             if (in_array($_REQUEST['nombre'], (array)$matriz_agenda)) { //duplicado
-              echo "duplicado<br />";
               // Existe el nombre y el campo teléfono está vacío.
               if (empty($_REQUEST['telefono']) || $_REQUEST['telefono'] == '') {
-                echo "lo borro<br />";
                 unset($matriz_agenda[$_REQUEST['nombre']]); // Eliminamos el elemento
               } else //Existe el nombre y el telefono NO está vacío
                 $matriz_agenda[(string)$_REQUEST['nombre']] = $_REQUEST['telefono'];
@@ -56,7 +53,7 @@
           $cont = 0;
           // Mostramos todos los contactos de la agenda
           foreach ($matriz_agenda as $nom => $num) {
-            echo "<tr><td>$nom (" . gettype($nom) . ")</td><td>$num (" . gettype($num) . ")</td></tr>";
+            echo "<tr><td>$nom</td><td>$num</td></tr>";
             $cont++;
           }
           echo "</table>";
@@ -84,8 +81,8 @@
         echo '<input type="submit" value ="Vaciar agenda" name="borrar"><p/>';
         echo '</form>';
         echo '</div>';
-        var_dump($_REQUEST);
-        var_dump($matriz_agenda);
+        //var_dump($_REQUEST);
+        //var_dump($matriz_agenda);
         ?>
       </div>
     </div>
