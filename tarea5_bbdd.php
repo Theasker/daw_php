@@ -12,8 +12,25 @@ Desarrollar una web para almacenar datos de registro web de usuarios.
   <body>
     <?php
     require './tarea5_bbdd_formularios.php';
-    frm_acceso();
-    frm_registro();
+    require './tarea5_bbddClass.php';
+    require './tarea5_bbdd_validaciones.php';
+
+    $bd = new tarea5_bbddClass();
+    $bd->borrarTabla();
+    $bd->crearTabla();
+    //$bd->insertarDatosEjemplo();
+
+    if (isset($_REQUEST['Registrarme'])) {
+      frm_registro();
+    } elseif (isset($_REQUEST['Volver'])) {
+      frm_acceso();
+    } elseif(isset($_REQUEST['Registrar'])) {
+      validarEmail($_REQUEST['email']);
+    }
+
+    var_dump($_REQUEST);
+
+    unset($bd);
     ?>
   </body>
 </html>
