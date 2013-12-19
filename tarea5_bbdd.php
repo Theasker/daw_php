@@ -25,7 +25,10 @@ Desarrollar una web para almacenar datos de registro web de usuarios.
     } elseif (isset($_REQUEST['Volver'])) {
       frm_acceso();
     } elseif(isset($_REQUEST['Registrar'])) {
-      validarEmail($_REQUEST['email']);
+      //validarEmail($_REQUEST['email']);
+      validaciones();
+    } else{
+      frm_acceso();
     }
 
     var_dump($_REQUEST);
