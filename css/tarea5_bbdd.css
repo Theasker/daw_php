@@ -1,0 +1,11 @@
+body {
+  font-family: 'Lato', helvetica, arial, sans-serif;
+  font-size: 13px;
+  color: #222;
+  margin: 20px;
+  line-height: 1.8em;
+}
+
+.errores{
+  display: none;
+}

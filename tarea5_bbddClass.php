@@ -70,6 +70,16 @@ FIN;
       print "<p>Se han insertado los datos de prueba tabla.</p>";
     }else echo "<p>No se han insertados datos ($resultado)</p>";
   }
+  
+  function insertarDatos($user,$pass,$nom,$ape,$email,$dni,$dir,$cp,$local,$prov){
+    $this->sql = "INSERT INTO dwes_usuarios.usuarios VALUES ";
+    $this->sql = $this->sql."(\"$user\",\"$pass\",\"$nom\",\"$ape\",\"$email\",\"$dni\",\"$dir\",\"$cp\",\"$local\",\"$prov\")";
+    echo $this->sql;
+    $resultado = $this->conexion->query($this->sql);
+    if ($resultado) {
+      print "<p>Se han insertado los datos de prueba tabla.</p>";
+    }else echo "<p>No se han insertados datos ($resultado)</p>";
+  }
 
   function __destruct() {
     if (isset($this->conexion))
