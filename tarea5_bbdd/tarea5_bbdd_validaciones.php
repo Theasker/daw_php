@@ -145,7 +145,7 @@ function generaPass() {
     $pass .= substr($cadena, $pos, 1);
   }
   // $claveCodificada = sha1($pass);
-  $claveCodificada = password_hash($pass, PASSWORD_BCRYPT);
+  $claveCodificada = md5($pass);
   $arrayPass[] = $pass;
   $arrayPass[] = $claveCodificada;
   validarPass($pass, $claveCodificada);
@@ -153,9 +153,9 @@ function generaPass() {
 }
 
 function validarPass($pass, $hash) {
-  if (password_verify($pass, $hash)) {
+  if (md5($pass) === $hash) {
     return true;
-  } else {
+  }else{
     return false;
   }
 }

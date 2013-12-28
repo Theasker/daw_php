@@ -59,7 +59,7 @@ FIN;
   }
   
   // insertamos unos datos de ejemplo para la tabla usuarios
-  /*function insertarDatosEjemplo(){
+  function insertarDatosEjemplo(){
     $this->sql = <<<FIN
 INSERT INTO dwes_usuarios.usuarios
 VALUES ("usuario1","pass1","nom1","ape1","nom1@nom1.com","11111111A","dir1","00001","localidad1","provincia1");
@@ -69,7 +69,7 @@ FIN;
     if ($resultado) {
       print "<p>Se han insertado los datos de prueba tabla.</p>";
     }else echo "<p>No se han insertados datos ($resultado)</p>";
-  }*/
+  }
   
   function insertarDatos($user,$pass,$nom,$ape,$email,$dni,$dir,$cp,$local,$prov){
     $this->sql = "INSERT INTO dwes_usuarios.usuarios ";
@@ -131,3 +131,4 @@ FIN;
   }
 
 }
+?>

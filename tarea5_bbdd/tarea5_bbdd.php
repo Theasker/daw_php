@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!--
 Tarea 5 de DWES - Bases de datos
@@ -8,18 +9,21 @@ Desarrollar una web para almacenar datos de registro web de usuarios.
   <head>
     <meta charset="UTF-8">
     <title>Ejercicio 5 sobre Bases de Datos</title>
-    <link rel="stylesheet" href="css/tarea5_bbdd.css" />
+    <link rel="stylesheet" href="css/tarea5_bbdd.css"/>
     <link rel="stylesheet" href="css/formularios.css"/>
     <script src="./jquery-1.10.2_1.js"></script>
 
   </head>
   <body>
     <?php
+    
+    error_reporting(E_ALL);
+    ini_set('display_errors', true);
     require './tarea5_bbdd_formularios.php';
     require './tarea5_bbddClass.php';
     require './tarea5_bbdd_validaciones.php';
 
-    session_start();
+    
     $bd = new tarea5_bbddClass();
 
     if (isset($_REQUEST['Registrarme'])) {
@@ -54,6 +58,7 @@ Desarrollar una web para almacenar datos de registro web de usuarios.
     }
     // Destruimos la variable de conexión para que se cierre la base de datos.
     unset($bd);
+    //var_dump($_REQUEST);
     ?>
   </body>
 </html>
