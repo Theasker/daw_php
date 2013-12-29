@@ -17,14 +17,16 @@ and open the template in the editor.
     <div id="contenido">
       <?php
       require './tarea6BbddPdoClass.php';
-
+      
       // Inicializamos la base de datos
       $bd = new tarea6BbddPdoClass();
-      $bd->edicionProducto($_REQUEST['cod_prod']);
-      var_dump($_REQUEST);
+      $bd->actualizacionProducto($_REQUEST['cod'],$_REQUEST['nombre'],$_REQUEST['nombre_corto'],
+              $_REQUEST['descripcion'],$_REQUEST['pvp']);
       ?>
+      <form method="post" action="listado.php">
+        <input type="submit" name="continuar" value="Continuar">
+      </form>
     </div>
-
     <div id="pie">
     </div>
   </body>

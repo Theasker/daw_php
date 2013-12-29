@@ -19,7 +19,6 @@ Página que muestra la información de un producto para poder actualizarla
       // Inicializamos la base de datos
       $bd = new tarea6BbddPdoClass();
       $bd->edicionProducto($_REQUEST['cod_prod']);
-      var_dump($_REQUEST);
       ?>
     </div>
 
