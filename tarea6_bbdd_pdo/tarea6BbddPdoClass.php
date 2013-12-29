@@ -43,21 +43,21 @@ class tarea6BbddPdoClass {
   function mostrarContenidoListado($familia) {
     echo '<h2>Productos de la familia: </h2>';
     $resultado = $this->dwes->query('SELECT * FROM producto WHERE familia = "' . $familia . '"');
-    
+
     while ($row = $resultado->fetch()) {
       echo '<form id="form_edicion" action="editar.php" method="post">';
       echo "<p>Producto " . $row['nombre_corto'] . ": " . $row['PVP'] . " euros.";
       echo '<input type="submit" name="editar" value="Editar"></p>';
       echo '<input type="hidden" name="cod_prod" value="' . $row['cod'] . '">';
       echo "</form>";
-    }    
+    }
   }
 
   function edicionProducto($cod) {
     echo '<form method="post" action="actualizar.php">';
     echo '<h2>Producto:</h2>';
     try {
-      $sql = 'SELECT * FROM producto WHERE cod = "'.$cod.'"';
+      $sql = 'SELECT * FROM producto WHERE cod = "' . $cod . '"';
       $resultado = $this->dwes->query($sql);
       $registro = $resultado->fetch();
       $nombre_corto = $registro['nombre_corto'];
@@ -87,13 +87,13 @@ class tarea6BbddPdoClass {
 HTML;
       echo $htmlcode;
     } catch (PDOException $ex) {
-      echo $ex->getCode().": ".$ex->getMessage();
+      echo $ex->getCode() . ": " . $ex->getMessage();
     }
     echo '</form>';
   }
-  
-  function actualizacionProducto($cod,$nombre,$nombre_corto,$descripcion,$pvp){
-    try{
+
+  function actualizacionProducto($cod, $nombre, $nombre_corto, $descripcion, $pvp) {
+    try {
       $sql = <<<SQL
 UPDATE producto SET 
   nombre="$nombre",
@@ -102,14 +102,17 @@ UPDATE producto SET
   pvp="$pvp"
   WHERE cod = "$cod"
 SQL;
-      if($this->dwes->exec($sql)){
+      if ($this->dwes->exec($sql)) {
         echo "<h2>Se han actualizado los datos correctamente</h2>";
-      }
-      else{
+      } else {
         echo "<h2>No se han podido actualizar los datos</h2>";
+        if (!filter_var($pvp, FILTER_VALIDATE_FLOAT)) {
+          echo "<p>el número introducido no es decimal</p>";
+        }
       }
     } catch (PDOException $ex) {
-      echo $ex->getCode().": ".$ex->getMessage();
+      echo $ex->getCode() . ": " . $ex->getMessage();
     }
   }
+
 }

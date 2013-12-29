@@ -16,6 +16,7 @@ and open the template in the editor.
     </div>
     <div id="contenido">
       <?php
+      var_dump($_REQUEST);
       require './tarea6BbddPdoClass.php';
       
       // Inicializamos la base de datos
