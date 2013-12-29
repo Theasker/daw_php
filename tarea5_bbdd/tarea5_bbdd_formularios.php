@@ -46,7 +46,8 @@ function frmRegistro() {
     <form action="tarea5_bbdd.php" method="POST">
       <fieldset>
         <legend  id="registro">Datos personales para registrarse: </legend>
-        <div class="registro"><label for="usuario">Usuario *:</label>
+        <div class="registro">
+          <label for="usuario">Usuario *:</label>
           <input class="requerido"  type="text" id="usuario" name="usuario" value="" size="30" title="Requerido: entre 4 y 15 caracteres.">
           <label for="nombre">Nombre *: </label>
           <input class="requerido" type="text" id="nombre" name="nombre" value="" size="30" title="Requerido entre 4 y 20 caracteres.">
