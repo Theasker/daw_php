@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Description of tarea6BbddPdoClass
  * Clase para todas las acciones en la base de datos
  * @author theasker
  */
@@ -97,17 +96,19 @@ HTML;
       $sql = <<<SQL
 UPDATE producto SET 
   nombre="$nombre",
-  nombre_corto="$nombre_corto$",
+  nombre_corto="$nombre_corto",
   descripcion="$descripcion",
   pvp="$pvp"
   WHERE cod = "$cod"
 SQL;
-      if ($this->dwes->exec($sql)) {
-        echo "<h2>Se han actualizado los datos correctamente</h2>";
-      } else {
+      if (!filter_var($pvp, FILTER_VALIDATE_FLOAT)) {
+        echo "<p>el número introducido no es decimal</p>";
         echo "<h2>No se han podido actualizar los datos</h2>";
-        if (!filter_var($pvp, FILTER_VALIDATE_FLOAT)) {
-          echo "<p>el número introducido no es decimal</p>";
+      } else {
+        if ($this->dwes->exec($sql)) {
+          echo "<h2>Se han actualizado los datos correctamente</h2>";
+        } else {
+          echo "<h2>No se han podido actualizar los datos</h2>";
         }
       }
     } catch (PDOException $ex) {
