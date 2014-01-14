@@ -40,8 +40,6 @@ Alumno - Mauricio Segura Ariño
         $zona = "";
       }
     }
-    var_dump($_REQUEST);
-    var_dump($_SESSION);
     ?>
     <fieldset>
       <legend>Preferencias</legend>

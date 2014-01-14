@@ -19,8 +19,6 @@ Alumno - Mauricio Segura Ariño
       $_SESSION['publico'] = $_REQUEST['publico'];
       $_SESSION['zona'] = $_REQUEST['zona'];
     }
-    var_dump($_REQUEST);
-    //var_dump($_SESSION);
     ?>
     <fieldset>
       <legend>Preferencias</legend>
