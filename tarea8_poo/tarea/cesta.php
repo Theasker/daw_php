@@ -1,6 +1,6 @@
 <?php
 require_once('include/CestaCompra.php');
-require_once('Smarty.class.php');
+require_once('../Smarty/libs/Smarty.class.php');
 
 // Recuperamos la información de la sesión
 session_start();

@@ -2,6 +2,8 @@
 require_once('include/DB.php');
 
 // Cargamos la librería de Smarty
+//define('SMARTY_DIR', "../Smarty/");
+error_reporting(E_ERROR);
 require_once('../Smarty/libs/Smarty.class.php');
 $smarty = new Smarty;
 $smarty->template_dir = '../web/smarty/tarea/templates/';

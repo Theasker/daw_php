@@ -1,8 +1,9 @@
 <?php
 require_once('include/DB.php');
 require_once('include/CestaCompra.php');
-require_once('Smarty.class.php');
+require_once('../Smarty/libs/Smarty.class.php');
 
+error_reporting(E_ERROR);
 // Recuperamos la información de la sesión
 session_start();
 
@@ -15,10 +16,10 @@ $cesta = CestaCompra::carga_cesta();
 
 // Cargamos la librería de Smarty
 $smarty = new Smarty;
-$smarty->template_dir = '/web/smarty/tarea/templates/';
-$smarty->compile_dir = '/web/smarty/tarea/templates_c/';
-$smarty->config_dir = '/web/smarty/tarea/configs/';
-$smarty->cache_dir = '/web/smarty/tarea/cache/';
+$smarty->template_dir = '../web/smarty/tarea/templates/';
+$smarty->compile_dir = '../web/smarty/tarea/templates_c/';
+$smarty->config_dir = '../web/smarty/tarea/configs/';
+$smarty->cache_dir = '../web/smarty/tarea/cache/';
 
 // Comprobamos si se ha enviado el formulario de vaciar la cesta
 if (isset($_POST['vaciar'])) {
