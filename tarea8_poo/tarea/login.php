@@ -2,8 +2,8 @@
 require_once('include/DB.php');
 
 // Cargamos la librería de Smarty
-//define('SMARTY_DIR', "../Smarty/");
-error_reporting(E_ERROR);
+//define('SMARTY_DIR', "../Smarty/libs/");
+//error_reporting(E_ALL ^E_NOTICE);
 require_once('../Smarty/libs/Smarty.class.php');
 $smarty = new Smarty;
 $smarty->template_dir = '../web/smarty/tarea/templates/';
@@ -13,7 +13,6 @@ $smarty->cache_dir = '../web/smarty/tarea/cache/';
 
 // Comprobamos si ya se ha enviado el formulario
 if (isset($_POST['enviar'])) {
-
     if (empty($_POST['usuario']) || empty($_POST['password'])) 
         $smarty->assign('error','Debes introducir un nombre de usuario y una contraseña');
     else {
@@ -28,6 +27,8 @@ if (isset($_POST['enviar'])) {
             $smarty->assign('error','Usuario o contraseña no válidos!');
         }
     }
+}else{
+  $smarty->assign('error','');
 }
 
 // Mostramos la plantilla

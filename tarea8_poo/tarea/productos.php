@@ -3,7 +3,7 @@ require_once('include/DB.php');
 require_once('include/CestaCompra.php');
 require_once('../Smarty/libs/Smarty.class.php');
 
-error_reporting(E_ERROR);
+//error_reporting(E_ERROR);
 // Recuperamos la información de la sesión
 session_start();
 

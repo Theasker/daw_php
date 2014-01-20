@@ -13,7 +13,6 @@ class DB {
         if (isset($dwes)) $resultado = $dwes->query($sql);
         return $resultado;
     }
-
     public static function obtieneProductos() {
         $sql = "SELECT cod, nombre_corto, nombre, PVP FROM producto;";
         $resultado = self::ejecutaConsulta ($sql);
@@ -30,8 +29,6 @@ class DB {
         
         return $productos;
     }
-
-    
     public static function obtieneProducto($codigo) {
         $sql = "SELECT cod, nombre_corto, nombre, PVP FROM producto";
         $sql .= " WHERE cod='" . $codigo . "'";
@@ -45,7 +42,6 @@ class DB {
         
         return $producto;    
     }
-    
     public static function verificaCliente($nombre, $contrasena) {
         $sql = "SELECT usuario FROM usuarios ";
         $sql .= "WHERE usuario='$nombre' ";
@@ -58,8 +54,6 @@ class DB {
             if($fila !== false) $verificado=true;
         }
         return $verificado;
-    }
-    
+    }    
 }
-
 ?>

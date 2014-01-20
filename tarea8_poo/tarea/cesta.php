@@ -1,4 +1,6 @@
 <?php
+	
+ini_set('date.timezone', 'Europe/Madrid');
 require_once('include/CestaCompra.php');
 require_once('../Smarty/libs/Smarty.class.php');
 
@@ -11,10 +13,10 @@ if (!isset($_SESSION['usuario']))
 
 // Cargamos la librería de Smarty
 $smarty = new Smarty;
-$smarty->template_dir = '/web/smarty/tarea/templates/';
-$smarty->compile_dir = '/web/smarty/tarea/templates_c/';
-$smarty->config_dir = '/web/smarty/tarea/configs/';
-$smarty->cache_dir = '/web/smarty/tarea/cache/';
+$smarty->template_dir = '../web/smarty/tarea/templates/';
+$smarty->compile_dir = '../web/smarty/tarea/templates_c/';
+$smarty->config_dir = '../web/smarty/tarea/configs/';
+$smarty->cache_dir = '../web/smarty/tarea/cache/';
 
 // Recuperamos la cesta de la compra
 $cesta = CestaCompra::carga_cesta();
