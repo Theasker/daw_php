@@ -25,8 +25,6 @@ class OrdenadorClass extends Producto {
     $this->optica = $row['optica'];
     $this->so = $row['so'];
     $this->otros= $row['otros'];
-  }
-
-  
+  }  
 }
 ?>

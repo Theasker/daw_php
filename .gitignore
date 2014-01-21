@@ -2,3 +2,5 @@
 .project
 .settings/
 /nbproject/
+/tarea8_poo/web/smarty/tarea/templates_c/*
+/tarea8_poo/web/smarty/tarea/cache/*
