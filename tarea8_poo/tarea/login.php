@@ -19,7 +19,7 @@ if (isset($_POST['enviar'])) {
         // Comprobamos las credenciales con la base de datos
         if (DB::verificaCliente($_POST['usuario'], $_POST['password'])) {
             session_start();
-            $_SESSION['usuario']=$_POST['usuario'];
+            $_SESSION['usuario'] = $_POST['usuario'];
             header("Location: productos.php");                    
         }
         else {
