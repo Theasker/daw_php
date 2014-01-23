@@ -37,7 +37,12 @@ if (isset($_POST['enviar'])) {
 $smarty->assign('usuario', $_SESSION['usuario']);
 $smarty->assign('productos', DB::obtieneProductos());
 $smarty->assign('productoscesta', $cesta->get_productos());
+$smarty->assign('ordenadores',DB::obtieneOrdenadores());
+
+//var_dump(DB::obtieneOrdenadores());
+//var_dump(DB::obtieneProductos());
+
 
 // Mostramos la plantilla
-$smarty->display('productos.tpl');     
+$smarty->display('productos.tpl');
 ?>

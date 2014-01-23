@@ -1,5 +1,6 @@
 <?php
 require_once('Producto.php');
+require_once('OrdenadorClass.php');
 class DB {
 
   protected static function ejecutaConsulta($sql) {
@@ -22,7 +23,6 @@ class DB {
     $sql = "SELECT cod, nombre_corto, nombre, PVP FROM producto;";
     $resultado = self::ejecutaConsulta($sql);
     $productos = array();
-
     if ($resultado) {
       // Añadimos un elemento por cada producto obtenido
       $row = $resultado->fetch();
@@ -39,12 +39,35 @@ class DB {
     $sql .= " WHERE cod='" . $codigo . "'";
     $resultado = self::ejecutaConsulta($sql);
     $producto = null;
-
     if (isset($resultado)) {
       $row = $resultado->fetch();
       $producto = new Producto($row);
     }
     return $producto;
+  }
+  
+  public static function obtieneOrdenadores() {
+    $sql = <<<PC
+SELECT producto.cod,nombre_corto,nombre,PVP,procesador,RAM,disco,grafica,unidadoptica,SO,otros 
+FROM theasker_tarea5.ordenador
+INNER JOIN theasker_tarea5.producto
+WHERE theasker_tarea5.ordenador.cod = theasker_tarea5.producto.cod;
+PC;
+    $resultado = self::ejecutaConsulta($sql);
+    $ordenatas = array();
+    if ($resultado){
+      // Añadimos un elemento del array por cada ordenador encontrado
+      $row = $resultado->fetch();
+      while ($row != null){
+        $ordenatas[] = new OrdenadorClass($row);
+        $row = $resultado->fetch();
+      }
+    }
+    return $ordenatas;
+  }
+  
+  public static function obtieneOrdenador($codigo) {
+    
   }
 
   public static function verificaCliente($nombre, $contrasena) {
@@ -53,7 +76,6 @@ class DB {
     $sql .= "AND contrasena='" . md5($contrasena) . "';";
     $resultado = self::ejecutaConsulta($sql);
     $verificado = false;
-
     if (isset($resultado)) {
       $fila = $resultado->fetch();
       if ($fila !== false)
@@ -61,7 +83,5 @@ class DB {
     }
     return $verificado;
   }
-
 }
-
 ?>

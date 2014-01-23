@@ -19,11 +19,11 @@ class OrdenadorClass extends Producto {
   public function __construct($row) {
     parent::__construct($row);
     $this->procesador = $row['procesador'];
-    $this->ram = $row['ram'];
+    $this->ram = $row['RAM'];
     $this->disco = $row['disco'];
     $this->grafica = $row['grafica'];
-    $this->optica = $row['optica'];
-    $this->so = $row['so'];
+    $this->optica = $row['unidadoptica'];
+    $this->so = $row['SO'];
     $this->otros= $row['otros'];
   }  
 }
