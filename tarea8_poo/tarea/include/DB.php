@@ -20,7 +20,7 @@ class DB {
   }
 
   public static function obtieneProductos() {
-    $sql = "SELECT cod, nombre_corto, nombre, PVP FROM producto;";
+    $sql = "SELECT cod,nombre_corto,nombre,descripcion,PVP FROM producto;";
     $resultado = self::ejecutaConsulta($sql);
     $productos = array();
     if ($resultado) {
@@ -35,7 +35,7 @@ class DB {
   }
 
   public static function obtieneProducto($codigo) {
-    $sql = "SELECT cod, nombre_corto, nombre, PVP FROM producto";
+    $sql = "SELECT cod, nombre_corto, nombre, PVP, descripcion FROM producto";
     $sql .= " WHERE cod='" . $codigo . "'";
     $resultado = self::ejecutaConsulta($sql);
     $producto = null;
@@ -48,10 +48,10 @@ class DB {
   
   public static function obtieneOrdenadores() {
     $sql = <<<PC
-SELECT producto.cod,nombre_corto,nombre,PVP,procesador,RAM,disco,grafica,unidadoptica,SO,otros 
+SELECT producto.cod,nombre_corto,nombre,PVP,procesador,RAM,disco,grafica,unidadoptica,SO,otros,descripcion
 FROM theasker_tarea5.ordenador
 INNER JOIN theasker_tarea5.producto
-WHERE theasker_tarea5.ordenador.cod = theasker_tarea5.producto.cod;
+ON theasker_tarea5.ordenador.cod = theasker_tarea5.producto.cod;
 PC;
     $resultado = self::ejecutaConsulta($sql);
     $ordenatas = array();
@@ -67,7 +67,21 @@ PC;
   }
   
   public static function obtieneOrdenador($codigo) {
-    
+    $sql = <<<SQL
+SELECT producto.cod,nombre_corto,nombre,PVP,procesador,RAM,disco,grafica,unidadoptica,SO,otros,descripcion
+FROM theasker_tarea5.ordenador
+INNER JOIN theasker_tarea5.producto
+ON theasker_tarea5.ordenador.cod = theasker_tarea5.producto.cod
+WHERE producto.cod = 
+SQL;
+    $sql .= "'".$codigo."';";
+    $resultado = self::ejecutaConsulta($sql);
+    $ordenata = null;
+    if (isset($resultado)){
+      $row = $resultado->fetch();
+      $ordenata = new OrdenadorClass($row);
+    }
+    return $ordenata;
   }
 
   public static function verificaCliente($nombre, $contrasena) {

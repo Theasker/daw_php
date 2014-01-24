@@ -148,6 +148,15 @@
   font-weight: bold;
 } 
 
+#caracteristicas {
+  width: 90%;
+  background: #DAFE8A;
+  margin: 0 auto;
+  border: 1px solid #000;
+  text-align: left;
+  background-color: #DAFE8A;
+  font-size: 14px;
+}
 #pie {
   padding: 0 10px;
   background-color: #99ccff;
