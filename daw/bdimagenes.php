@@ -63,13 +63,13 @@ SQL;
         try {
           $opc = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
           $dsn = "mysql:host=127.0.0.1;dbname=bdimagenes";
-          $usuario = 'bdimagenes';
-          $contrasena = 'bdimagenes';
+          $usuario = 'root';
+          $contrasena = '';
           $basedatos = new PDO($dsn, $usuario, $contrasena, $opc);
           $resultado = null;
-          if (isset($dwes))
+          if (isset($basedatos))
             $resultado = $basedatos->query($sql);
-          mysql_close($basedatos);
+          //mysql_close($basedatos);
           return $resultado;
         } catch (PDOException $ex) {
           echo $ex->getCode() . ": " . $ex->getMessage();
