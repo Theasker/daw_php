@@ -21,25 +21,26 @@ Carga imagenes en una base de datos y luego las visualiza
         // si se ha seleccionado una imagen validamos la extensión
         $imagentmp = $_FILES['foto']['tmp_name'];
         // comprobamos que sea una imagen buscando la cadena 'image/'
-        $pos = strpos($_FILES['foto']['type'],'image/');
+        $pos = strpos($_FILES['foto']['type'], 'image/');
         echo $pos;
-        if ($pos === false){
+        if ($pos === false) {
           // si el formato no es correcto emitimos un error
           echo ('Formato de archivo no reconocido.');
         } else {
           // Si el formato de imagen el correcto la cargamos en la BD
           $imagen = $_FILES['foto']['tmp_name']; //contenido del archivo
-          $nomimagen = $_FILES['foto']['name']; //nombre
-          $tipoimagen = $_FILES['foto']['type']; //tipo
+          //$nomimagen = $_FILES['foto']['name']; //nombre
+          //$tipoimagen = $_FILES['foto']['type']; //tipo
           $tamimagen = $_FILES['foto']['size']; //tamaño
+          
+          //abrir la imagen para lectura
+          $lectura_imagen=fopen($imagen, "rb");   
+ 
+          //convertir la imagen en código binario
+          $imagen_binario = addslashes(fread($lectura_imagen, filesize($imagen)));
 
-          $fp = fopen($imagen, 'rb'); //abrimos el archivo binario "imagen" en modo lectura
-          $contenido = fread($fp, $tamimagen); //lee el archivo hasta el tamaño de la imagen
-          $contenido = addslashes($contenido); //Añadimos caracteres de escape
-          fclose($fp); //cerramos el archivo
-
-          DB::guardarFoto($contenido);
-        }
+          DB::guardarFoto($imagen_binario);
+          }
       }
     }
 
@@ -47,50 +48,69 @@ Carga imagenes en una base de datos y luego las visualiza
     var_dump($_REQUEST);
 
     class DB {
-
-      protected static function crearTabla() {
-        $sql = <<<SQL
-CREATE TABLE IF NOT EXISTS `timagenes` (
-  `id_imagenes` int(6) NOT NULL AUTO_INCREMENT,
-  `imagen` blob NOT NULL,
-  PRIMARY KEY (`id_imagenes`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
-SQL;
-        self::ejecutaConsulta($sql);
-      }
-
-      protected static function ejecutaConsulta($sql) {
+      protected static function conexion() {
         try {
           $opc = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
-          $dsn = "mysql:host=127.0.0.1;dbname=bdimagenes";
-          $usuario = 'root';
-          $contrasena = '';
+          $dsn = "mysql:host=theasker.infenlaces.com;dbname=theasker_varios";
+          $usuario = 'Theasker';
+          $contrasena = 'Theasker';
           $basedatos = new PDO($dsn, $usuario, $contrasena, $opc);
-          $resultado = null;
-          if (isset($basedatos))
-            $resultado = $basedatos->query($sql);
-          //mysql_close($basedatos);
-          return $resultado;
+          return $basedatos;
         } catch (PDOException $ex) {
           echo $ex->getCode() . ": " . $ex->getMessage();
         }
       }
-
-      public static function guardarFoto($contenido) {
-        $sql = <<<SQL
-INSERT INTO timagenes('imagen') values ('$contenido');
-SQL;
-        self::crearTabla();
-        $res = self::ejecutaConsulta($sql);
-        var_dump($res);
+      protected static function sqlAccion($sql) {
+        try {
+          $basedatos = self::conexion();
+          $resultado = null;
+          if (isset($basedatos)){
+            $resultado = $basedatos->exec($sql);
+            return $resultado;
+          }          
+        } catch (PDOException $ex) {
+          echo $ex->getCode() . ": " . $ex->getMessage();
+        }
       }
-
-      public static function mostrarFotos() {
-        $sql = "SELECT imagen FROM timagenes;";
-        $resultado = self::ejecutaConsulta($sql);
+      protected static function sqlSeleccion($sql) {
+        try {
+          $basedatos = self::conexion();
+          $resultado = null;
+          if (isset($basedatos)){
+            $resultado = $basedatos->query($sql);
+            return $resultado;
+          }
+        } catch (PDOException $ex) {
+          echo $ex->getCode() . ": " . $ex->getMessage();
+        }
+      }
+      protected static function crearTabla() {
+        $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS `timagenes` (
+  `id_imagenes` int(6) NOT NULL AUTO_INCREMENT,
+  `imagen` mediumblob NOT NULL,
+  PRIMARY KEY (`id_imagenes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+SQL;
+        $resultado = self::sqlAccion($sql);
+        if ($resultado == 0){
+          echo "No se ha creado ninguna tabla<br>";
+        }
+      }
+      public static function guardarFoto($contenido) {
+        $sql = "INSERT INTO timagenes('imagen') VALUES('$contenido');";
+        self::crearTabla();
+        $resultado = self::sqlAccion($sql);
+        if ($resultado == 0){
+          echo "No se ha agregado la imagen a la BD";
+        }
         var_dump($resultado);
       }
-
+      public static function mostrarFotos() {
+        $sql = "SELECT imagen FROM timagenes;";
+        $resultado = self::sqlSeleccion($sql);
+        var_dump($resultado);
+      }
     }
     ?>
   </body>
