@@ -22,7 +22,6 @@ Carga imagenes en una base de datos y luego las visualiza
         $imagentmp = $_FILES['foto']['tmp_name'];
         // comprobamos que sea una imagen buscando la cadena 'image/'
         $pos = strpos($_FILES['foto']['type'], 'image/');
-        echo $pos;
         if ($pos === false) {
           // si el formato no es correcto emitimos un error
           echo ('Formato de archivo no reconocido.');
@@ -30,22 +29,24 @@ Carga imagenes en una base de datos y luego las visualiza
           // Si el formato de imagen el correcto la cargamos en la BD
           $imagen = $_FILES['foto']['tmp_name']; //contenido del archivo
           //$nomimagen = $_FILES['foto']['name']; //nombre
-          //$tipoimagen = $_FILES['foto']['type']; //tipo
+          $tipoimagen = $_FILES['foto']['type']; //tipo
           $tamimagen = $_FILES['foto']['size']; //tamaño
           
           //abrir la imagen para lectura
-          $lectura_imagen=fopen($imagen, "rb");   
- 
-          //convertir la imagen en código binario
-          $imagen_binario = addslashes(fread($lectura_imagen, filesize($imagen)));
+          $lectura_imagen=fopen($imagen, 'r+b');   
+           //convertir la imagen en código binario
+          $imagen_binario = fread($lectura_imagen, filesize($imagen));
+          //añadimos las comillas a la imagen para agregar la al campo blob
+          $imagen_binario = addslashes($imagen_binario);
+          fclose($lectura_imagen);
 
-          DB::guardarFoto($imagen_binario);
+          DB::guardarFoto($tipoimagen,$imagen_binario);
+          DB::mostrarFotos();
           }
       }
     }
 
     var_dump($_FILES);
-    var_dump($_REQUEST);
 
     class DB {
       protected static function conexion() {
@@ -88,6 +89,7 @@ Carga imagenes en una base de datos y luego las visualiza
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS `timagenes` (
   `id_imagenes` int(6) NOT NULL AUTO_INCREMENT,
+   `tipo` text(30),
   `imagen` mediumblob NOT NULL,
   PRIMARY KEY (`id_imagenes`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
@@ -97,19 +99,47 @@ SQL;
           echo "No se ha creado ninguna tabla<br>";
         }
       }
-      public static function guardarFoto($contenido) {
-        $sql = "INSERT INTO timagenes('imagen') VALUES('$contenido');";
+      public static function guardarFoto($tipo,$contenido) {
         self::crearTabla();
-        $resultado = self::sqlAccion($sql);
-        if ($resultado == 0){
-          echo "No se ha agregado la imagen a la BD";
+        try {
+          $basedatos = self::conexion();
+          if (isset($basedatos)){
+            $sql = 'INSERT INTO timagenes(tipo,imagen) VALUES (:tipo, :imagen)';
+            $consulta = $basedatos->prepare($sql);
+            $consulta->bindParam(":tipo", $tipo);
+            $consulta->bindParam(":imagen", $contenido);
+            var_dump($consulta);
+            var_dump($consulta->execute());
+          }          
+        } catch (PDOException $ex) {
+          echo $ex->getCode() . ": " . $ex->getMessage();
         }
-        var_dump($resultado);
       }
       public static function mostrarFotos() {
-        $sql = "SELECT imagen FROM timagenes;";
+        $sql = "SELECT tipo,imagen FROM timagenes;";
         $resultado = self::sqlSeleccion($sql);
-        var_dump($resultado);
+        if($resultado){
+          //obtenemos los datos de la consulta en un array
+          while($row = $resultado->fetch()){
+            $tipo = $row['tipo'];
+            $imagen = $row['imagen'];
+            //echo '<IMG src="'.$imagen.'" width="150"/>';
+            //ahora colocamos la cabeceras correcta segun el tipo de imagen
+            //header("Content-type: $tipo");
+            //echo $imagen;
+          }
+        }
+      }
+      protected function descargarImagen(){
+         $qry = “SELECT id_imagenes,tipo, imagen FROM timagenes WHERE id_imagenes=$id”;
+$res = mysql_query($qry);
+$tipo = mysql_result($res, 0, “tipo”);
+$contenido = mysql_result($res, 0, “contenido”);
+$nombre= mysql_result($res, 0, “nombre”);
+
+header(“Content-type: $tipo”);
+header(“Content-Disposition: ; filename=\”$nombre\”");
+print $contenido; 
       }
     }
     ?>
