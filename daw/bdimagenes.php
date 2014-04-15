@@ -31,18 +31,17 @@ Carga imagenes en una base de datos y luego las visualiza
           //$nomimagen = $_FILES['foto']['name']; //nombre
           $tipoimagen = $_FILES['foto']['type']; //tipo
           $tamimagen = $_FILES['foto']['size']; //tamaño
-          
           //abrir la imagen para lectura
-          $lectura_imagen=fopen($imagen, 'r+b');   
-           //convertir la imagen en código binario
-          $imagen_binario = fread($lectura_imagen, filesize($imagen));
+          $lectura_imagen = fopen($imagen, 'rb');
+          //convertir la imagen en código binario
+          $imagen_binario = fread($lectura_imagen, $tamimagen);
           //añadimos las comillas a la imagen para agregar la al campo blob
           $imagen_binario = addslashes($imagen_binario);
           fclose($lectura_imagen);
 
-          DB::guardarFoto($tipoimagen,$imagen_binario);
+          DB::guardarFoto($tipoimagen, $imagen);
           DB::mostrarFotos();
-          }
+        }
       }
     }
 
@@ -65,10 +64,10 @@ Carga imagenes en una base de datos y luego las visualiza
         try {
           $basedatos = self::conexion();
           $resultado = null;
-          if (isset($basedatos)){
+          if (isset($basedatos)) {
             $resultado = $basedatos->exec($sql);
             return $resultado;
-          }          
+          }
         } catch (PDOException $ex) {
           echo $ex->getCode() . ": " . $ex->getMessage();
         }
@@ -77,7 +76,7 @@ Carga imagenes en una base de datos y luego las visualiza
         try {
           $basedatos = self::conexion();
           $resultado = null;
-          if (isset($basedatos)){
+          if (isset($basedatos)) {
             $resultado = $basedatos->query($sql);
             return $resultado;
           }
@@ -95,51 +94,44 @@ CREATE TABLE IF NOT EXISTS `timagenes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
 SQL;
         $resultado = self::sqlAccion($sql);
-        if ($resultado == 0){
+        if ($resultado == 0) {
           echo "No se ha creado ninguna tabla<br>";
         }
       }
-      public static function guardarFoto($tipo,$contenido) {
+      public static function guardarFoto($tipo, $contenido) {
         self::crearTabla();
         try {
           $basedatos = self::conexion();
-          if (isset($basedatos)){
+          if (isset($basedatos)) {
             $sql = 'INSERT INTO timagenes(tipo,imagen) VALUES (:tipo, :imagen)';
             $consulta = $basedatos->prepare($sql);
             $consulta->bindParam(":tipo", $tipo);
             $consulta->bindParam(":imagen", $contenido);
             var_dump($consulta);
             var_dump($consulta->execute());
-          }          
+          }
         } catch (PDOException $ex) {
           echo $ex->getCode() . ": " . $ex->getMessage();
         }
       }
       public static function mostrarFotos() {
-        $sql = "SELECT tipo,imagen FROM timagenes;";
+        $sql = "SELECT id_imagenes FROM timagenes";
         $resultado = self::sqlSeleccion($sql);
-        if($resultado){
+        if ($resultado) {
           //obtenemos los datos de la consulta en un array
-          while($row = $resultado->fetch()){
-            $tipo = $row['tipo'];
-            $imagen = $row['imagen'];
-            //echo '<IMG src="'.$imagen.'" width="150"/>';
-            //ahora colocamos la cabeceras correcta segun el tipo de imagen
-            //header("Content-type: $tipo");
-            //echo $imagen;
+          echo "<table border=\"1\">";
+          echo "<tr>";
+          echo "<td>codigo</td>";
+          echo "<td>foto</td>";
+          echo "</tr>";
+          while ($row = $resultado->fetch()) {
+            echo "<tr>";
+            echo "<td>$row[id_imagenes]</td>";
+            echo "<a href=\"mostrarImagen.php?cod=".$row["id_imagenes"]."\">".$row["id_imagenes"]."</a>";
+            echo "</tr>";
           }
+          echo "</table>";
         }
-      }
-      protected function descargarImagen(){
-         $qry = “SELECT id_imagenes,tipo, imagen FROM timagenes WHERE id_imagenes=$id”;
-$res = mysql_query($qry);
-$tipo = mysql_result($res, 0, “tipo”);
-$contenido = mysql_result($res, 0, “contenido”);
-$nombre= mysql_result($res, 0, “nombre”);
-
-header(“Content-type: $tipo”);
-header(“Content-Disposition: ; filename=\”$nombre\”");
-print $contenido; 
       }
     }
     ?>

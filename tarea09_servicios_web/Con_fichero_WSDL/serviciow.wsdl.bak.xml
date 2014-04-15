@@ -1,0 +1,102 @@
+<wsdl:definitions xmlns:tns="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" 
+                  targetNamespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+    <wsdl:message name="getPVPSoapIn">
+        <wsdl:part name="codigo" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="getPVPSoapOut">
+        <wsdl:part name="return" type="s:float" />
+    </wsdl:message>
+    <wsdl:message name="getFamiliasSoapIn" />
+    <wsdl:message name="getFamiliasSoapOut">
+        <wsdl:part name="return" type="tns:string[]" />
+    </wsdl:message>
+    <wsdl:message name="getProductosFamiliaSoapIn">
+        <wsdl:part name="familia" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="getProductosFamiliaSoapOut">
+        <wsdl:part name="return" type="tns:string[]" />
+    </wsdl:message>
+    <wsdl:message name="getStockSoapIn">
+        <wsdl:part name="codigo" type="s:string" />
+        <wsdl:part name="tienda" type="s:int" />
+    </wsdl:message>
+    <wsdl:message name="getStockSoapOut">
+        <wsdl:part name="return" type="s:int" />
+    </wsdl:message>
+    <wsdl:portType name="ServerWSoap">
+        <wsdl:operation name="getPVP">
+            <wsdl:documentation>
+                Obtiene el PVP de un producto a partir de su codigo
+            </wsdl:documentation>
+            <wsdl:input message="tns:getPVPSoapIn" />
+            <wsdl:output message="tns:getPVPSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="getFamilias">
+            <wsdl:documentation>
+                Devuelve un array con los codigos de todas las familias
+            </wsdl:documentation>
+            <wsdl:input message="tns:getFamiliasSoapIn" />
+            <wsdl:output message="tns:getFamiliasSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="getProductosFamilia">
+            <wsdl:documentation>
+                Devuelve un array con los ccodigos de los productos de una familia
+            </wsdl:documentation>
+            <wsdl:input message="tns:getProductosFamiliaSoapIn" />
+            <wsdl:output message="tns:getProductosFamiliaSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="getStock" parameterOrder="codigo tienda">
+            <wsdl:documentation>
+                Devuelve el nÃºmero de unidades que existen en una tienda de un producto
+            </wsdl:documentation>
+            <wsdl:input message="tns:getStockSoapIn" />
+            <wsdl:output message="tns:getStockSoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ServerWSoap" type="tns:ServerWSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+        <wsdl:operation name="getPVP">
+            <soap:operation soapAction="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/getPVP" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="codigo" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getFamilias">
+            <soap:operation soapAction="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/getFamilias" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getProductosFamilia">
+            <soap:operation soapAction="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/getProductosFamilia" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="familia" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getStock">
+            <soap:operation soapAction="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/getStock" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="codigo tienda" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ServerW">
+        <wsdl:port name="ServerWSoap" binding="tns:ServerWSoap">
+            <soap:address location="http://localhost/www/dwes/php/tarea9_servicios_web/Con_fichero_WSDL/crearWsdlConPHPWSDL.php" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
