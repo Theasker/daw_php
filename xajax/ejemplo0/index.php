@@ -22,10 +22,15 @@ function si_no($entrada) {
 }
 
 //asociamos la función creada anteriormente al objeto xajax
-$xajax->registerFunction("si_no");
+$xajax->register(XAJAX_FUNCTION,"si_no");
+//$xajax->registerFunction("si_no");
+
+// Y configuramos la ruta en que se encuentra la carpeta xajax_js
+$xajax->configure('javascript URI','./');
 
 //El objeto xajax tiene que procesar cualquier petición
-$xajax->processRequests();
+$xajax->processRequest();
+//$xajax->processRequests();
 ?>
 
 <html>
@@ -33,9 +38,9 @@ $xajax->processRequests();
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=ISO-8859-1">
       <title>Si / No en Ajax</title>
-      <?
+      <?php
       //En el <head> indicamos al objeto xajax se encargue de generar el javascript necesario
-      $xajax->printJavascript("xajax/");
+      $xajax->printJavascript();
       ?>
   </head>
 
