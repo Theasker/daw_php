@@ -6,7 +6,6 @@ function enviarFormulario() {
         
     // Aquí se hace la llamada a la función registrada de PHP
     xajax_validarFormulario (xajax.getFormValues("datos"));
-    //xajax.request({xjxfun:"validarFormulario"}, {mode:'synchronous', parameters: [datos]})
     return false;
 }
 

@@ -19,6 +19,7 @@ $xajax->register(XAJAX_FUNCTION,"validarLogin");
 // Debe ser llamado antes del código HTML
 $xajax->processRequest();
 
+validarLogin('dwes', 'abc123');
 // Validamos el nombre y contraseña enviados
 function validarLogin($usuario, $password) {
     $respuesta = new xajaxResponse();

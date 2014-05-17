@@ -53,7 +53,7 @@ function validarFormulario($valores) {
 
     return $respuesta;    
 }
-
+error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 // Creamos el objeto xajax
 $xajax = new xajax();
 

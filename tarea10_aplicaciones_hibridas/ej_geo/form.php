@@ -1,15 +1,16 @@
 <?php
-
 /**
  * Desarrollo Web en Entorno Servidor
  * Tema 8 : Aplicaciones web híbridas
  * Ejemplo geocodificación: form.php
  */
+
 // Incluimos la lilbrería Xajax
-require_once("./xajax_core/xajax.inc.php");
+require_once("../../../libs/xajax_core/xajax.inc.php");
 
 // Creamos las funciones que van a ser llamadas
 //  desde JavaScript
+
 function ubicaryahoo($coordenadas){
     $respuesta = new xajaxResponse();
     // Hacemos una búsqueda inversa (gflags=R), esto es
@@ -18,42 +19,43 @@ function ubicaryahoo($coordenadas){
     //  y localización española para el lenguaje (locale=es_ES)
     $search = 'http://where.yahooapis.com/geocode?location='.$coordenadas['latitud'].'+'.$coordenadas['longitud'].'&flags=G&locale=es_ES&gflags=R&appid=tuID';
     $xml = simplexml_load_file($search);
- 
+    
     $respuesta->assign("calle", "value", (string) $xml->Result[0]->street . " " . $xml->Result[0]->house);
     $respuesta->assign("ciudad", "value", (string) $xml->Result[0]->level3 . " " . $xml->Result[0]->level2 . " " . $xml->Result[0]->level1);
     $respuesta->assign("pais", "value", (string) $xml->Result[0]->level0);
     $respuesta->assign("cp", "value", (string) $xml->Result[0]->uzip);
- 
+    
     $respuesta->assign("enviarcoordenadas","value","Ver dirección");
     $respuesta->assign("enviarcoordenadas","disabled",false);
     $respuesta->assign("enviardireccion","disabled",false);
     return $respuesta;
 }
-function ubicargoogle($coordenadas) {
-  $respuesta = new xajaxResponse();
-  // Indicamos idioma español (language=es) y
-  //  que no estamos usando un sensor de localización (sensor=false)
-  $search = 'http://maps.google.com/maps/api/geocode/xml?address=' . $coordenadas['calle'] . '+' . $coordenadas['ciudad'] . '+' . $coordenadas['pais'] . '&language=es&sensor=false';
-  $xml = simplexml_load_file($search);
 
-  $respuesta->assign("latitud", "value", (string) $xml->result[0]->geometry->location->lat);
-  $respuesta->assign("longitud", "value", (string) $xml->result[0]->geometry->location->lng);
-
-  $respuesta->assign("enviardireccion", "value", "Ver coordenadas");
-  $respuesta->assign("enviarcoordenadas", "disabled", false);
-  $respuesta->assign("enviardireccion", "disabled", false);
-  return $respuesta;
+function ubicargoogle($coordenadas){
+    $respuesta = new xajaxResponse();
+    // Indicamos idioma español (language=es) y
+    //  que no estamos usando un sensor de localización (sensor=false)
+    $search = 'http://maps.google.com/maps/api/geocode/xml?address='.$coordenadas['calle'].'+'.$coordenadas['ciudad'].'+'.$coordenadas['pais'].'&language=es&sensor=false';
+    $xml = simplexml_load_file($search);
+    
+    $respuesta->assign("latitud", "value", (string) $xml->result[0]->geometry->location->lat);
+    $respuesta->assign("longitud", "value", (string) $xml->result[0]->geometry->location->lng);
+    
+    $respuesta->assign("enviardireccion","value","Ver coordenadas");
+    $respuesta->assign("enviarcoordenadas","disabled",false);
+    $respuesta->assign("enviardireccion","disabled",false);
+    return $respuesta;
 }
 // Creamos el objeto xajax
 $xajax = new xajax();
- 
+
 // Registramos las funciones que vamos a llamar desde JavaScript
 $xajax->register(XAJAX_FUNCTION,"ubicaryahoo");
 $xajax->register(XAJAX_FUNCTION,"ubicargoogle");
- 
+
 // Y configuramos la ruta en que se encuentra la carpeta xajax_js
 $xajax->configure('javascript URI','../../../libs/');
- 
+
 // El método processRequest procesa las peticiones que llegan a la página
 // Debe ser llamado antes del código HTML
 $xajax->processRequest();
@@ -66,7 +68,7 @@ $xajax->processRequest();
   <link rel="stylesheet" href="estilos.css" type="text/css" />
   <?php
   // Le indicamos a Xajax que incluya el código JavaScript necesario
-  $xajax->printJavascript();
+  $xajax->printJavascript(); 
   ?>
   <script type="text/javascript" src="ubicar.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -82,7 +84,7 @@ $xajax->processRequest();
     // ]]>
   </script>
 </head>
- 
+
 <body>
     <div id='form'>
     <form id='datos' action="javascript:void(null);">
@@ -96,7 +98,7 @@ $xajax->processRequest();
             <label for='longitud' >Longitud:</label>
             <input type='text' name='longitud' id='longitud' />
         </div>
- 
+        
         <div class='campo'>
             <input type='submit' id='enviarcoordenadas' name='enviar' value='Ver dirección con Yahoo!' onclick="enviarCoordenadas();"/>
             <input type='submit' id='enviardireccion' name='enviar' value='Ver coordenadas con Google' onclick="enviarDireccion();"/>
@@ -122,4 +124,3 @@ $xajax->processRequest();
     </div>
 </body>
 </html>
-
