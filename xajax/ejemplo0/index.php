@@ -4,6 +4,7 @@ require ('./xajax_core//xajax.inc.php');
 
 //instanciamos el objeto de la clase xajax
 $xajax = new xajax();
+$xajax->configure('debug',true);
 
 function si_no($entrada) {
   if ($entrada == "true") {

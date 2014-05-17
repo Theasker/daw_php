@@ -19,14 +19,15 @@ $xajax->register(XAJAX_FUNCTION,"validarLogin");
 // Debe ser llamado antes del código HTML
 $xajax->processRequest();
 
-validarLogin('dwes', 'abc123');
 // Validamos el nombre y contraseña enviados
 function validarLogin($usuario, $password) {
     $respuesta = new xajaxResponse();
 
-    if (empty($usuario) || empty($password)) 
+    if (empty($usuario) || empty($password)) {
         // $error = "Debes introducir un nombre de usuario y una contraseña";
         $respuesta->setReturnValue(false);
+        $respuesta->assign("respuesta", "innerHTML", "No puedes dejar los campos vacios");
+    }
     else {
         // Comprobamos las credenciales con la base de datos
         if (DB::verificaCliente($usuario, $password)) {

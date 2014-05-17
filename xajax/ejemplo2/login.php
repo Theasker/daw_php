@@ -51,8 +51,11 @@ $xajax->configure('javascript URI','./include/');
         <div class='campo'>
             <input type='submit' name='enviar' value='Enviar' />
         </div>
+        <div id="respuesta"></div>
     </fieldset>
+    
     </form>
+    
     </div>
 </body>
 </html>
