@@ -5,8 +5,11 @@ class DB {
 
   protected static function ejecutaConsulta($sql) {
     $opc = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
-    $dsn = "mysql:host=theasker.infenlaces.com;dbname=theasker_xajax";
-    $usuario = 'theasker_xajax';
+//    $dsn = "mysql:host=theasker.infenlaces.com;dbname=theasker_xajax";
+//    $usuario = 'theasker_xajax';
+//    $contrasena = 'Theasker';
+    $dsn = "mysql:host=localhost;dbname=xajax";
+    $usuario = 'root';
     $contrasena = 'Theasker';
 
     $dwes = new PDO($dsn, $usuario, $contrasena, $opc);
