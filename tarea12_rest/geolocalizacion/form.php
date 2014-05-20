@@ -23,6 +23,7 @@ function ubicaryahoo($coordenadas) {
   //print_r($xml->results[0]);
   //print_r($xml->results[0]->address_components[1]->long_name);
 /*
+ * Con el servicio de Yahoo
   $respuesta->assign("calle", "value", (string) $xml->Result[0]->street . " " . $xml->Result[0]->house);
   $respuesta->assign("ciudad", "value", (string) $xml->Result[0]->level3 . " " . $xml->Result[0]->level2 . " " . $xml->Result[0]->level1);
   $respuesta->assign("pais", "value", (string) $xml->Result[0]->level0);
@@ -32,6 +33,7 @@ function ubicaryahoo($coordenadas) {
   $respuesta->assign("enviarcoordenadas", "disabled", false);
   $respuesta->assign("enviardireccion", "disabled", false);
  */
+  // Con el servicio de Google
   $respuesta->assign("calle", "value", (string) $xml->results[0]->address_components[1]->long_name);
   $respuesta->assign("ciudad", "value", (string) $xml->results[0]->address_components[2]->long_name);
   $respuesta->assign("pais", "value", (string) $xml->results[0]->address_components[5]->long_name);

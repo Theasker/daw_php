@@ -19,8 +19,7 @@ $xajax->register(XAJAX_FUNCTION,"ordenarReparto");
 // Debe ser llamado antes del código HTML
 $xajax->processRequest();
 
-function ordenarReparto($coordenadasPuntosIntermedios)
-{
+function ordenarReparto($coordenadasPuntosIntermedios){
     // Indicamos las coordenadas del almacén de donde sale la mercancía
     // Se podría añadir código para permitir al usuario indicarlas
     //  o incluso coger por defecto la ubicación actual del usuario
@@ -57,8 +56,7 @@ function ordenarReparto($coordenadasPuntosIntermedios)
     return $respuesta;
 }
 
-function obtenerCoordenadas($parametros)
-{
+function obtenerCoordenadas($parametros){
     $respuesta = new xajaxResponse();
     $search = 'http://maps.google.com/maps/api/geocode/xml?address='.$parametros['direccion'].'&sensor=false&appid=z9hiLa3e';
     $xml = simplexml_load_file($search);
